@@ -43,6 +43,7 @@ body {
   z-index: 5;
   backdrop-filter: blur(3px);
 }
+.nav-actions{ display:flex; gap:8px; align-items:center }
 
 .brand{
   display:flex;
@@ -59,6 +60,11 @@ body {
   color: var(--ink);
   background: color-mix(in oklab, var(--paper) 75%, white);
   font-weight: 700;
+}
+.brand-logo{
+  width:34px;
+  height:34px;
+  display:block;
 }
 .brand-name{
   font-weight:700;
@@ -232,6 +238,22 @@ textarea:focus, input[type="text"]:focus{
   border-radius: 14px;
   background:#F7F4EB;
   padding: 12px;
+}
+
+.logo-preview{
+  margin-top: 12px;
+  display:flex;
+  align-items:center;
+  gap: 18px;
+}
+.logo-preview .logo-large{
+  width: 96px;
+  height: 96px;
+  display:block;
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  background: #F4F1E7;
+  padding: 10px;
 }
 .persona h3{
   font-family: "Playfair Display", serif; margin: 0 0 6px 0; font-size: 1.05rem;

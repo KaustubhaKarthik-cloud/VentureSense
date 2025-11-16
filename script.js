@@ -14,6 +14,7 @@
   const risksList = document.getElementById('risks');
   const resetBtn = document.getElementById('reset-btn');
   const exportBtn = document.getElementById('export-btn');
+  const installBtn = document.getElementById('install-app');
 
   const ctx = mapCanvas ? mapCanvas.getContext('2d') : null;
 
@@ -360,10 +361,83 @@
     URL.revokeObjectURL(a.href);
   });
 
+  // Download logo as PNG
+  const downloadLogoBtn = document.getElementById('download-logo');
+  downloadLogoBtn?.addEventListener('click', async ()=>{
+    try{
+      const svgText = await fetch('assets/logo.svg').then(r=>r.text());
+      // Create image from SVG
+      const svgBlob = new Blob([svgText], {type:'image/svg+xml'});
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
+      img.onload = ()=>{
+        const size = 512; // export size
+        const canvas = document.createElement('canvas');
+        canvas.width = size; canvas.height = size;
+        const c = canvas.getContext('2d');
+        // background to match brand paper tone
+        c.fillStyle = '#E6E2D3';
+        c.fillRect(0,0,size,size);
+        // draw centered
+        c.drawImage(img, 0, 0, size, size);
+        URL.revokeObjectURL(url);
+        // download
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'venturesense-logo-512.png';
+        a.click();
+      };
+      img.onerror = ()=>{
+        alert('Could not render logo image.');
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    }catch(err){
+      console.error(err);
+      alert('Failed to download logo. Try again.');
+    }
+  });
+
   window.addEventListener('resize', ()=>{
     if(!results.classList.contains('hidden') && lastScores){
       drawMap(lastScores.demand, lastScores.comp);
     }
+  });
+
+  // PWA: Register service worker (root scope)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg=>console.log('SW registered:', reg.scope))
+        .catch(err=>console.error('SW registration failed:', err));
+    });
+  }
+
+  // PWA: custom install prompt
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e)=>{
+    e.preventDefault();
+    deferredPrompt = e;
+    if(installBtn) installBtn.style.display = 'inline-flex';
+    console.log('beforeinstallprompt fired');
+  });
+
+  installBtn?.addEventListener('click', async ()=>{
+    if(!deferredPrompt){
+      alert('Install is not available yet. Make sure you are on HTTPS and the page has been loaded recently.');
+      return;
+    }
+    deferredPrompt.prompt();
+    const choice = await deferredPrompt.userChoice;
+    console.log('Install choice:', choice.outcome);
+    if(choice.outcome === 'accepted'){
+      installBtn.style.display = 'none';
+    }
+    deferredPrompt = null;
+  });
+
+  window.addEventListener('appinstalled', ()=>{
+    if(installBtn) installBtn.style.display = 'none';
   });
 
   function buildReport(){

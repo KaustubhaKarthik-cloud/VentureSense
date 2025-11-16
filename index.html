@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VentureSense — Idea Analyzer</title>
+  <meta name="theme-color" content="#E6E2D3"/>
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style2.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,16 +14,20 @@
 <body>
   <header class="nav">
     <div class="brand">
-      <span class="brand-mark">V</span>
+      <img src="blob:https://chatgpt.com/7d6b9168-602e-4a8d-8388-8e6c5d2ae275" class="brand-logo" alt="VentureSense logo">
       <span class="brand-name">VentureSense</span>
     </div>
     <div class="tagline">Quick, classy, and clear startup intelligence</div>
+    <div class="nav-actions">
+      <button id="download-logo" class="ghost">Download Logo (PNG)</button>
+      <button id="install-app" class="ghost">Install App</button>
+    </div>
   </header>
 
   <main>
     <section class="panel input-panel">
       <h1>AI Idea Analyzer</h1>
-      <p class="sub">Paste your startup or product idea below. We'll score it, find gaps, generate personas, suggest monetization, map its market position, and flag key risks.</p>
+      <p class="sub">Paste your startup or product idea below. We’ll score it, find gaps, generate personas, suggest monetization, map its market position, and flag key risks.</p>
 
       <form id="idea-form">
         <label for="idea">Your idea</label>
@@ -40,6 +46,12 @@
 
         <button id="analyze-btn" type="submit">Analyze Idea</button>
       </form>
+    </section>
+
+    <section class="panel logo-preview">
+      <h2>Logo Preview</h2>
+      <img src="blob:https://chatgpt.com/7d6b9168-602e-4a8d-8388-8e6c5d2ae275" alt="VentureSense logo preview" class="logo-large">
+      <p class="sub">Use “Download Logo (PNG)” to get a raster image for decks and docs.</p>
     </section>
 
     <section id="results" class="results hidden">
