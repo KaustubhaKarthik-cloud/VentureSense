@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VentureSense — Idea Analyzer</title>
+  <link rel="stylesheet" href="style2.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">
+      <span class="brand-mark">V</span>
+      <span class="brand-name">VentureSense</span>
+    </div>
+    <div class="tagline">Quick, classy, and clear startup intelligence</div>
+  </header>
+
+  <main>
+    <section class="panel input-panel">
+      <h1>AI Idea Analyzer</h1>
+      <p class="sub">Paste your startup or product idea below. We'll score it, find gaps, generate personas, suggest monetization, map its market position, and flag key risks.</p>
+
+      <form id="idea-form">
+        <label for="idea">Your idea</label>
+        <textarea id="idea" name="idea" rows="7" placeholder="Example: A mobile app that helps busy pet owners monitor health vitals, feeding schedules, and nutrition using AI."></textarea>
+
+        <div class="inline">
+          <div class="field">
+            <label for="category">Category (optional)</label>
+            <input id="category" name="category" type="text" placeholder="e.g., pets, fitness, fintech, education">
+          </div>
+          <div class="field">
+            <label for="audience">Primary audience (optional)</label>
+            <input id="audience" name="audience" type="text" placeholder="e.g., students, SMBs, parents">
+          </div>
+        </div>
+
+        <button id="analyze-btn" type="submit">Analyze Idea</button>
+      </form>
+    </section>
+
+    <section id="results" class="results hidden">
+      <div class="grid">
+        <div class="panel score-panel">
+          <h2>Idea Strength</h2>
+          <div class="score-wrap">
+            <div class="score-circle">
+              <span id="viability-score">—</span>
+              <small>/ 100</small>
+            </div>
+            <ul class="score-breakdown">
+              <li><span>Market demand</span><strong id="score-demand">—</strong></li>
+              <li><span>Competition level</span><strong id="score-competition">—</strong></li>
+              <li><span>Monetization potential</span><strong id="score-monetization">—</strong></li>
+              <li><span>Tech complexity</span><strong id="score-tech">—</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel gaps-panel">
+          <h2>Gap Finder</h2>
+          <ul id="competitors" class="competitors"></ul>
+          <div class="gap-highlight" id="gap-highlight">—</div>
+        </div>
+
+        <div class="panel personas-panel">
+          <h2>Micro‑Personas</h2>
+          <div id="personas" class="personas"></div>
+        </div>
+
+        <div class="panel monetization-panel">
+          <h2>Monetization</h2>
+          <ul id="monetization" class="chips"></ul>
+        </div>
+
+        <div class="panel map-panel">
+          <h2>Market Position Map</h2>
+          <div class="map-legend">
+            <span>Low demand</span>
+            <span>High demand</span>
+          </div>
+          <canvas id="position-map" width="560" height="360"></canvas>
+          <div class="map-legend bottom">
+            <span>Low competition</span>
+            <span>High competition</span>
+          </div>
+        </div>
+
+        <div class="panel risks-panel">
+          <h2>Smart Risk Flags</h2>
+          <ul id="risks" class="risks"></ul>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="reset-btn" class="ghost">Reset</button>
+        <button id="export-btn">Export Report</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 VentureSense</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chaos Meme Factory 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo">CMF</div>
+      <div class="title">
+        <h1>Chaos Meme Factory</h1>
+        <p class="tagline">Meme Reactor Core: mutate memes in real-time.</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <label class="compact">
+        <span>Preset</span>
+        <select id="preset">
+          <option value="">—</option>
+          <option value="vaporwave">Vaporwave Glitch</option>
+          <option value="noir">Noir Dither</option>
+          <option value="pop">Pop Posterize</option>
+          <option value="pixel">Pixel Chaos</option>
+        </select>
+      </label>
+      <label class="compact">
+        <span>Seed</span>
+        <input id="chaos-seed" type="number" min="0" max="999999" value="0" />
+      </label>
+      <label class="compact checkbox-inline">
+        <input id="chaos-lock" type="checkbox"/>
+        <span>Lock Chaos</span>
+      </label>
+      <label class="compact">
+        <span>Mutate</span>
+        <input id="mutate-toggle" type="checkbox"/>
+      </label>
+      <label class="compact">
+        <span>Cycle (s)</span>
+        <input id="mutate-interval" type="number" min="1" max="30" value="5"/>
+      </label>
+      <button id="btn-reactor" class="danger">Red Button</button>
+      <button id="btn-gacha" class="secondary">Meme Gacha</button>
+      <button id="btn-chaos" class="primary">Chaos</button>
+      <button id="btn-download" class="secondary">Download</button>
+      <button id="btn-reset" class="ghost">Reset</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage">
+      <div id="canvas-wrap">
+        <canvas id="stage" aria-label="Meme canvas"></canvas>
+      </div>
+      <div class="stage-help">Tip: Drag an image here, or use the upload button. Drag captions and stickers directly on the canvas. Activate Mutate for real-time chaos.</div>
+      <div id="reactor-log" aria-live="polite" class="log"></div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="panel">
+        <h2>Image</h2>
+        <div id="dropzone" role="button" tabindex="0" aria-label="Dropzone">
+          <div class="dz-inner">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 16v-8m0 0l-3 3m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 16.5V18a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1.5a4.5 4.5 0 0 0-4.5-4.5h-7A4.5 4.5 0 0 0 4 16.5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="dz-text">
+              <strong>Drop image</strong> here or click to upload
+              <div class="hint">PNG, JPG, WEBP</div>
+            </div>
+          </div>
+        </div>
+        <input id="file-input" type="file" accept="image/*" hidden />
+      </div>
+
+      <div class="panel">
+        <h2>Captions</h2>
+        <label class="field">
+          <span>Top text</span>
+          <input id="text-top" type="text" placeholder="TOP TEXT"/>
+        </label>
+        <label class="field">
+          <span>Bottom text</span>
+          <input id="text-bottom" type="text" placeholder="BOTTOM TEXT"/>
+        </label>
+        <div class="grid-2">
+          <label class="field">
+            <span>Font size</span>
+            <input id="font-size" type="range" min="24" max="144" value="64"/>
+          </label>
+          <label class="field">
+            <span>Outline</span>
+            <input id="outline" type="range" min="0" max="16" value="6"/>
+          </label>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Fill</span>
+            <input id="fill-color" type="color" value="#ffffff"/>
+          </label>
+          <label class="field">
+            <span>Stroke</span>
+            <input id="stroke-color" type="color" value="#000000"/>
+          </label>
+        </div>
+        <label class="checkbox">
+          <input id="all-caps" type="checkbox" checked/>
+          <span>ALL CAPS</span>
+        </label>
+        <label class="checkbox">
+          <input id="glitch-fonts" type="checkbox"/>
+          <span>Glitch Fonts</span>
+        </label>
+        <div class="hint">Drag captions directly on the canvas.</div>
+      </div>
+
+      <div class="panel">
+        <h2>Effects</h2>
+        <div class="grid-2">
+          <label class="field">
+            <span>Hue</span>
+            <input id="fx-hue" type="range" min="0" max="360" value="0"/>
+          </label>
+          <label class="field">
+            <span>Noise</span>
+            <input id="fx-noise" type="range" min="0" max="100" value="0"/>
+          </label>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Pixelate</span>
+            <input id="fx-pixel" type="range" min="0" max="32" value="0"/>
+          </label>
+          <label class="field">
+            <span>Posterize</span>
+            <input id="fx-post" type="range" min="0" max="12" value="0"/>
+          </label>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Swirl</span>
+            <input id="fx-swirl" type="range" min="0" max="100" value="0"/>
+          </label>
+          <label class="field">
+            <span>Kaleidoscope</span>
+            <input id="fx-kaleido" type="range" min="0" max="12" value="0"/>
+          </label>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Glitch</span>
+            <input id="fx-glitch" type="range" min="0" max="100" value="0"/>
+          </label>
+          <label class="checkbox">
+            <input id="fx-dither" type="checkbox"/>
+            <span>Dither</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Stickers</h2>
+        <div class="grid-2">
+          <button id="add-sticker-1">🔥 Fire</button>
+          <button id="add-sticker-2">😂 Tears</button>
+          <button id="add-sticker-3">💥 Boom</button>
+          <button id="sticker-remove" class="ghost">Remove Selected</button>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Scale</span>
+            <input id="sticker-scale" type="range" min="20" max="300" value="100"/>
+          </label>
+          <label class="field">
+            <span>Rotate</span>
+            <input id="sticker-rot" type="range" min="-180" max="180" value="0"/>
+          </label>
+        </div>
+        <div class="hint">Click a sticker on canvas to select, then drag/scale/rotate.</div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="app-footer">
+    <span>Chaos Meme Factory — remix ideas in absurd, hilarious ways.</span>
+  </footer>
+
+  <script type="module" src="reactor.js"></script>
+</body>
+</html>
